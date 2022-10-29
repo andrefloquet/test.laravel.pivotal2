@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\PodcastController;
 
 /*
@@ -15,5 +13,9 @@ use App\Http\Controllers\PodcastController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/podcasts/status/{status}', [PodcastController::class, 'showByStatus']);
+
+Route::post('/podcasts/{podcast}', [PodcastController::class, 'update']);
 
 Route::apiResource('podcasts', PodcastController::class);

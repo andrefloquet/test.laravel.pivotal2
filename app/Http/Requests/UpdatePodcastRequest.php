@@ -13,7 +13,7 @@ class UpdatePodcastRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class UpdatePodcastRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            
+            'name'          => 'required|min:4|max:255|unique:podcasts,name,' . $this->podcast->id,
+            'description'   => 'required|max:1000',
+            'marketing_url' => 'required|url',
+            'feed_url'      => 'required|url',
         ];
     }
 }

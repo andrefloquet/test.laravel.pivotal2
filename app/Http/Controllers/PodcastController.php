@@ -21,16 +21,6 @@ class PodcastController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorePodcastRequest  $request
@@ -64,19 +54,20 @@ class PodcastController extends Controller
      */
     public function show(Podcast $podcast)
     {
-        //
+        return new PodcastResource($podcast); 
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource by status.
      *
      * @param  \App\Models\Podcast  $podcast
      * @return \Illuminate\Http\Response
      */
-    public function edit(Podcast $podcast)
+    public function showByStatus($status)
     {
-        //
-    }
+        $podcast = Podcast::where('status', $status)->get();
+        return new PodcastCollection($podcast);
+    }    
 
     /**
      * Update the specified resource in storage.
@@ -87,7 +78,21 @@ class PodcastController extends Controller
      */
     public function update(UpdatePodcastRequest $request, Podcast $podcast)
     {
-        //
+        try {
+
+            $podcast->name          = trim($request->name);
+            $podcast->description   = trim($request->description);
+            $podcast->marketing_url = trim($request->marketing_url);
+            $podcast->feed_url      = trim($request->feed_url);
+            $podcast->save();
+            
+            return new PodcastResource($podcast);
+            
+        } catch(QueryException $exception) {
+            return "An Error has occurred when Updating a Podcast: " . $exception->getSql();
+        } catch(\Exception $exception) {
+            return "An Error has occurred: " . $exception->getMessage();
+        } 
     }
 
     /**
@@ -98,6 +103,7 @@ class PodcastController extends Controller
      */
     public function destroy(Podcast $podcast)
     {
-        //
+        $podcast->delete();
+        return response(null, 204);
     }
 }
