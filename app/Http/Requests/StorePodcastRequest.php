@@ -13,7 +13,7 @@ class StorePodcastRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class StorePodcastRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'          => 'required|min:4|max:255|unique:podcasts,name',
+            'description'   => 'required|max:1000',
+            'marketing_url' => 'required|url',
+            'feed_url'      => 'required|url',
+            //'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048' //TODO: When Implement image
         ];
     }
 }

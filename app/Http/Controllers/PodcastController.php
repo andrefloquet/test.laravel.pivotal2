@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Podcast;
 use App\Http\Requests\StorePodcastRequest;
 use App\Http\Requests\UpdatePodcastRequest;
+use App\Http\Resources\PodcastCollection;
+use App\Http\Resources\PodcastResource;
 
 class PodcastController extends Controller
 {
@@ -15,7 +17,7 @@ class PodcastController extends Controller
      */
     public function index()
     {
-        echo "Test";
+        return new PodcastCollection(Podcast::all());
     }
 
     /**
@@ -36,7 +38,22 @@ class PodcastController extends Controller
      */
     public function store(StorePodcastRequest $request)
     {
-        //
+        try {
+    
+            $podcast = Podcast::create([
+                'name'          => trim($request->name),
+                'description'   => trim($request->description),
+                'marketing_url' => trim($request->marketing_url),
+                'feed_url'      => trim($request->feed_url)
+            ]);
+
+            return new PodcastResource($podcast);
+            
+        } catch(QueryException $exception) {
+            return "An Error has occurred when inserting a Podcast: " . $exception->getSql();
+        } catch(\Exception $exception) {
+            return "An Error has occurred: " . $exception->getMessage();
+        } 
     }
 
     /**

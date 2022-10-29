@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('marketing_url');
             $table->text('feed_url');
             //$table->text('image');  //TODO: Implement image field
-            $table->enum('status', ['published', 'review'])->default('published');  
+            $table->enum('status', ['review', 'published'])->default('review');
             $table->timestamps();
         });
     }
