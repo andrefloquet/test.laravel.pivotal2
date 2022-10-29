@@ -15,7 +15,7 @@ class PodcastController extends Controller
      */
     public function index()
     {
-        //
+        echo "Test";
     }
 
     /**
