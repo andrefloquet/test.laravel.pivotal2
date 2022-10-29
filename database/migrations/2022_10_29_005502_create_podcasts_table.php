@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('podcasts', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->text('description');
+            $table->text('marketing_url');
+            $table->text('feed_url');            
             $table->timestamps();
         });
     }
