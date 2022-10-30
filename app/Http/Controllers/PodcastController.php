@@ -13,7 +13,7 @@ class PodcastController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return App\Http\Resources\PodcastCollection
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class PodcastController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorePodcastRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return App\Http\Resources\PodcastResource
      */
     public function store(StorePodcastRequest $request)
     {
@@ -50,18 +50,19 @@ class PodcastController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Podcast  $podcast
-     * @return \Illuminate\Http\Response
+     * @return App\Http\Resources\PodcastResource
      */
     public function show(Podcast $podcast)
     {
+        //TODO: Fix error when Podcast does not exist
         return new PodcastResource($podcast); 
     }
 
     /**
-     * Display the specified resource by status.
+     * Display all specified resources by status.
      *
      * @param  \App\Models\Podcast  $podcast
-     * @return \Illuminate\Http\Response
+     * @return App\Http\Resources\PodcastCollection
      */
     public function showByStatus($status)
     {
@@ -70,11 +71,36 @@ class PodcastController extends Controller
     }    
 
     /**
+     * Update Status by specified resource
+     *
+     * @param  \App\Models\Podcast  $podcast
+     * @return App\Http\Resources\PodcastResource or error message
+     */
+    public function approval(Podcast $podcast)
+    {
+        if($podcast->status == 'published') {
+
+            return "This Podcast is already approved!";
+
+        } elseif($podcast->status == 'review') {
+
+            $podcast->status = 'published';
+            $podcast->save();
+
+            return new PodcastResource($podcast); 
+
+        } else {
+
+            return "Podcast has an undefined status! Can't be approved!";
+        }
+    }    
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatePodcastRequest  $request
      * @param  \App\Models\Podcast  $podcast
-     * @return \Illuminate\Http\Response
+     * @return App\Http\Resources\PodcastResource
      */
     public function update(UpdatePodcastRequest $request, Podcast $podcast)
     {
@@ -99,7 +125,7 @@ class PodcastController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Podcast  $podcast
-     * @return \Illuminate\Http\Response
+     * @return null, 204 status
      */
     public function destroy(Podcast $podcast)
     {

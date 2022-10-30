@@ -14,6 +14,8 @@ use App\Http\Controllers\PodcastController;
 |
 */
 
+Route::get('/podcasts/approval/{podcast}', [PodcastController::class, 'approval']);
+
 Route::get('/podcasts/status/{status}', [PodcastController::class, 'showByStatus']);
 
 Route::post('/podcasts/{podcast}', [PodcastController::class, 'update']);
