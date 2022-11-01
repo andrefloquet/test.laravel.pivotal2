@@ -23,6 +23,7 @@ class PodcastResource extends JsonResource
             'status'         => $this->status,
             'created_at'     => $this->created_at->diffForHumans(),
             'updated_at'     => $this->updated_at->diffForHumans(),
+            //'comments'       =>$this->comments,
         ]; 
     }
 }

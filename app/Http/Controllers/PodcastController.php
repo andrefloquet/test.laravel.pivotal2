@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Podcast;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePodcastRequest;
 use App\Http\Requests\UpdatePodcastRequest;
 use App\Http\Resources\PodcastCollection;
@@ -52,9 +53,17 @@ class PodcastController extends Controller
      * @param  \App\Models\Podcast  $podcast
      * @return App\Http\Resources\PodcastResource
      */
-    public function show(Podcast $podcast)
+    public function show(Request $request, Podcast $podcast)
     {
         //TODO: Fix error when Podcast does not exist
+
+        if(isset($request['comments']) && intval($request['comments']) === 1) {
+
+            $podcast = Podcast::with('comments')->findOrFail($podcast->id);
+
+            return response()->json($podcast);
+        }
+
         return new PodcastResource($podcast); 
     }
 
