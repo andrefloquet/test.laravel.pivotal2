@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Comment;
+use App\Models\Podcast;
 
-class Podcast extends Model
+class Comment extends Model
 {
     use HasFactory;
 
@@ -16,13 +16,13 @@ class Podcast extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'podcast_id',
         'name',
-        'description',
-        'marketing_url',
-        'feed_url'
-    ];   
+        'email',
+        'body',
+    ];    
 
-    public function comments() {
-        return $this->hasMany(Comment::class);
-    } 
+    public function podcast() {
+        return $this->belongsTo(Podcast::class);
+    }
 }

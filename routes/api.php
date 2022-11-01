@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PodcastController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,5 @@ Route::get('/podcasts/status/{status}', [PodcastController::class, 'showByStatus
 Route::post('/podcasts/{podcast}', [PodcastController::class, 'update']);
 
 Route::apiResource('podcasts', PodcastController::class);
+
+Route::apiResource('comments', CommentController::class);

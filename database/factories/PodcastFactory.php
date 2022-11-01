@@ -18,7 +18,7 @@ class PodcastFactory extends Factory
     {
         return [
 
-            'name'          => $this->faker->name(),
+            'name'          => $this->faker->unique()->name(),
             'description'   => $this->faker->paragraph(),
             'marketing_url' => $this->faker->url(),
             'feed_url'      => $this->faker->url(),
