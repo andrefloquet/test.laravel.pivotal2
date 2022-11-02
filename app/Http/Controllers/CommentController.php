@@ -4,30 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Http\Requests\StoreCommentRequest;
-use App\Http\Requests\UpdateCommentRequest;
 use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return "Test 2";
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -37,11 +17,10 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        //return "Test 3";
-        
         try {
     
             $comment = Comment::create([
+
                 'podcast_id' => intval($request->podcast_id),
                 'name'       => trim($request->name),
                 'email'      => trim($request->email),
@@ -51,54 +30,36 @@ class CommentController extends Controller
             return new CommentResource($comment);
             
         } catch(QueryException $exception) {
-            return "An Error has occurred when inserting a Comment: " . $exception->getSql();
+
+            return response()->json(['message' => 'An Error has occurred when inserting a Comment: ' . $exception->getSql()], 400);
+
         } catch(\Exception $exception) {
-            return "An Error has occurred: " . $exception->getMessage();
+
+            return response()->json(['message' => 'An Error has occurred: ' . $exception->getMessage()], 400);
         } 
     }
 
     /**
-     * Display the specified resource.
+     * Update Status by specified resource
      *
      * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
+     * @return null, 204
      */
-    public function show(Comment $comment)
-    {
-        //
-    }
+    public function flag(Comment $comment)
+    {    
+        try {
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
+            $comment->delete();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCommentRequest  $request
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCommentRequest $request, Comment $comment)
-    {
-        //
-    }
+            return response(null, 204);
+            
+        } catch(QueryException $exception) {
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Comment $comment)
-    {
-        //
+            return response()->json(['message' => 'An Error has occurred when Flaging a Comment: ' . $exception->getSql()], 400);
+
+        } catch(\Exception $exception) {
+
+            return response()->json(['message' => 'An Error has occurred: ' . $exception->getMessage()], 400);
+        }          
     }
 }

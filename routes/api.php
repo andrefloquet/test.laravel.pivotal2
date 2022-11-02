@@ -23,4 +23,6 @@ Route::post('/podcasts/{podcast}', [PodcastController::class, 'update']);
 
 Route::apiResource('podcasts', PodcastController::class);
 
+Route::get('/comments/flag/{comment}', [CommentController::class, 'flag']);
+
 Route::apiResource('comments', CommentController::class);

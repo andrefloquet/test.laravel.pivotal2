@@ -14,6 +14,8 @@ class Podcast extends Model
     use SoftDeletes;
     use HasFactory;
 
+    protected $hidden = ['deleted_at'];
+
     /**
      * The attributes that are mass assignable.
      *

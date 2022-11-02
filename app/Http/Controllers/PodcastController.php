@@ -41,9 +41,12 @@ class PodcastController extends Controller
             return new PodcastResource($podcast);
             
         } catch(QueryException $exception) {
-            return "An Error has occurred when inserting a Podcast: " . $exception->getSql();
+
+            return response()->json(['message' => 'An Error has occurred when inserting a Podcast: ' . $exception->getSql()], 400);
+
         } catch(\Exception $exception) {
-            return "An Error has occurred: " . $exception->getMessage();
+
+            return response()->json(['message' => 'An Error has occurred: ' . $exception->getMessage()], 400);
         } 
     }
 
@@ -55,13 +58,11 @@ class PodcastController extends Controller
      */
     public function show(Request $request, Podcast $podcast)
     {
-        //TODO: Fix error when Podcast does not exist
-
         if(isset($request['comments']) && intval($request['comments']) === 1) {
 
-            $podcast = Podcast::with('comments')->findOrFail($podcast->id);
+            $podcast = Podcast::with('comments')->findOrFail($podcast->id)->first();
 
-            return response()->json($podcast);
+            return response()->json(['data' => $podcast]);
         }
 
         return new PodcastResource($podcast); 
@@ -76,6 +77,7 @@ class PodcastController extends Controller
     public function showByStatus($status)
     {
         $podcast = Podcast::where('status', $status)->paginate(12);
+
         return new PodcastCollection($podcast);
     }    
 
@@ -89,7 +91,7 @@ class PodcastController extends Controller
     {
         if($podcast->status == 'published') {
 
-            return "This Podcast is already approved!";
+            return response()->json(['message' => 'This Podcast is already approved!'], 400);
 
         } elseif($podcast->status == 'review') {
 
@@ -100,7 +102,7 @@ class PodcastController extends Controller
 
         } else {
 
-            return "Podcast has an undefined status! Can't be approved!";
+            return response()->json(['message' => 'Podcast has an undefined status! Can not be approved!'], 400);
         }
     }    
 
@@ -124,9 +126,12 @@ class PodcastController extends Controller
             return new PodcastResource($podcast);
             
         } catch(QueryException $exception) {
-            return "An Error has occurred when Updating a Podcast: " . $exception->getSql();
+
+            return response()->json(['message' => 'An Error has occurred when Updating a Podcast: ' . $exception->getSql()], 400);
+
         } catch(\Exception $exception) {
-            return "An Error has occurred: " . $exception->getMessage();
+
+            return response()->json(['message' => 'An Error has occurred: ' . $exception->getMessage()], 400);
         } 
     }
 
@@ -138,7 +143,19 @@ class PodcastController extends Controller
      */
     public function destroy(Podcast $podcast)
     {
-        $podcast->delete();
-        return response(null, 204);
+        try {
+
+            $podcast->delete();
+
+            return response(null, 204);
+            
+        } catch(QueryException $exception) {
+
+            return response()->json(['message' => 'An Error has occurred when deleting a Podcast: ' . $exception->getSql()], 400);
+
+        } catch(\Exception $exception) {
+
+            return response()->json(['message' => 'An Error has occurred: ' . $exception->getMessage()], 400);
+        }         
     }
 }

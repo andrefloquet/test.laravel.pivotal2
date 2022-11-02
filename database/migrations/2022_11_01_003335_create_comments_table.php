@@ -16,16 +16,12 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('podcast_id')->constrained()->cascadeOnDelete();
-            //$table->unsignedBigInteger('podcast_id');
             $table->string('name');
             $table->string('email');
             $table->text('body');
             $table->timestamps();
+            $table->softDeletes();
 
-            // TODO: Check why it is not working
-            //$table->unique(['podcast_id','name', 'email', 'body']);
-
-            //$table->foreignId('podcast_id')->references('id')->on('podcasts')->onDelete('cascade');
         });
     }
 
