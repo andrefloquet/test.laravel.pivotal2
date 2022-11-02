@@ -68,14 +68,14 @@ class PodcastController extends Controller
     }
 
     /**
-     * Display all specified resources by status.
+     * Display podcasts by status.
      *
      * @param  \App\Models\Podcast  $podcast
      * @return App\Http\Resources\PodcastCollection
      */
     public function showByStatus($status)
     {
-        $podcast = Podcast::where('status', $status)->get();
+        $podcast = Podcast::where('status', $status)->paginate(12);
         return new PodcastCollection($podcast);
     }    
 
