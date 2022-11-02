@@ -22,6 +22,7 @@ return new class extends Migration
             //$table->text('image');  //TODO: Implement image field
             $table->enum('status', ['review', 'published'])->default('review');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
