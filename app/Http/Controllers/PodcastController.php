@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Podcast;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\StorePodcastRequest;
 use App\Http\Requests\UpdatePodcastRequest;
 use App\Http\Resources\PodcastCollection;
@@ -76,7 +77,7 @@ class PodcastController extends Controller
      */
     public function showByStatus($status)
     {
-        $podcast = Podcast::where('status', $status)->paginate(12);
+        $podcast = Cache::remember('key', now()->addHour(), fn() => Podcast::where('status', $status)->paginate(12)); 
 
         return new PodcastCollection($podcast);
     }    
