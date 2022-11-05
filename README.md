@@ -18,8 +18,11 @@ $ composer install
 
 # Update Settings
 -Rename the .env.example file to .env 
+
 -Create a new database called podcast and update .env file. 
-(For instance, if you're going to use Mysql, change this line on .env file to DB_CONNECTION=mysql and DB_DATABASE=podcast)
+(For instance, if you're going to use Mysql, change this line on .env file 
+to DB_CONNECTION=mysql and DB_DATABASE=podcast)
+
 -generate an app key
 $ php artisan key:generate
 
@@ -35,7 +38,7 @@ $ php artisan test
 
 ## Usage
 
-(On development).
+https://gold-star-826597.postman.co/workspace/b0a6dbc8-281d-4ae6-aee1-912822cbc44f/documentation/17825473-e8efebdc-f3da-4bc2-b489-74059d0fe731?entity=&branch=&version=
 
 
 ## License
