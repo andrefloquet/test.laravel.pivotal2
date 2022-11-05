@@ -61,7 +61,7 @@ class PodcastController extends Controller
     {
         if(isset($request['comments']) && intval($request['comments']) === 1) {
 
-            $podcast = Podcast::with('comments')->findOrFail($podcast->id)->first();
+            $podcast = Podcast::with('comments')->find($podcast->id);
 
             return response()->json(['data' => $podcast]);
         }
@@ -77,7 +77,7 @@ class PodcastController extends Controller
      */
     public function showByStatus($status)
     {
-        $podcast = Cache::remember('key', now()->addHour(), fn() => Podcast::where('status', $status)->paginate(12)); 
+        $podcast = Cache::remember($status, now()->addMinute(), fn() => Podcast::where('status', $status)->paginate(12));
 
         return new PodcastCollection($podcast);
     }    
